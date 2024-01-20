@@ -47,12 +47,14 @@ export const updateRestaurantAsync = createAsyncThunk(
   }
 );
 
-export const getRestaurantAsync = createAsyncThunk(
-  "restaurants/getRestaurant",
+export const getImagesAsync = createAsyncThunk(
+  "imagesBazar/getImages",
 
   async () => {
+    // console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+    const searchQuery = "mountains+cars";
     const response = await axios.get(
-      "https://datavalidation.pythonanywhere.com/restaurant/add/"
+      `https://pixabay.com/api/?key=41909199-7a39a7a3a69f000bfab5c8248&q=${searchQuery}&image_type=photo&pretty=true&per_page=50`
     );
     // console.log(response.data)
     return response.data;
@@ -153,16 +155,16 @@ const addRestaurantSlice = createSlice({
         state.isLoading = false;
       })
 
-      .addCase(getRestaurantAsync.pending, (state, action) => {
+      .addCase(getImagesAsync.pending, (state, action) => {
         state.isLoading = true;
       })
 
-      .addCase(getRestaurantAsync.fulfilled, (state, action) => {
+      .addCase(getImagesAsync.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload;
       })
 
-      .addCase(getRestaurantAsync.rejected, (state, action) => {
+      .addCase(getImagesAsync.rejected, (state, action) => {
         state.isError = true;
         state.isLoading = false;
       })

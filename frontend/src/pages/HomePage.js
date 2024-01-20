@@ -3,32 +3,16 @@ import React from "react";
 import MagnifyingGlass from "../components/svg/MagnifyingGlass";
 import OrIcon from "../components/svg/OrIcon";
 import { Link } from "react-router-dom";
+import { BiLogOut } from "react-icons/bi";
+import { FaHistory } from "react-icons/fa";
+import { MdFavorite } from "react-icons/md";
+import Header from "../components/Header";
 
 const HomePage = () => {
   return (
     <>
       <section id="mainPage" style={{ height: "130vh" }}>
-        <header className="header">
-          <div>
-            <Link to="/" className="logo">
-              HomePage 1
-            </Link>
-          </div>
-
-          <nav className="d-flex flex-row p-3">
-            <div>
-              <Link to="/homePage2">Page 2</Link>
-            </div>
-
-            <div>
-              <Link to="/searchResult">Search Results</Link>
-            </div>
-
-            {/* <div>
-              <Link  to="/imageDetails" >Image Details</Link>
-            </div> */}
-          </nav>
-        </header>
+        <Header />
 
         <div className="d-flex flex-column align-items-center ">
           <div className="jumb-text">
