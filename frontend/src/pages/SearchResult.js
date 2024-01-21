@@ -6,14 +6,15 @@ import Popup from "../components/Popup";
 import { useDispatch, useSelector } from "react-redux";
 import { getImagesAsync } from "../redux/Slices/AddDataSlice";
 import { RotatingLines } from "react-loader-spinner";
+import { BiLogOut } from "react-icons/bi";
+import { FaHistory } from "react-icons/fa";
+import { MdFavorite } from "react-icons/md";
 
 const SearchResult = () => {
   const dispatch = useDispatch();
   const navigation = useNavigate();
 
-  const [imagesData, setimagesData] = useState([]);
-  const [popUpCondition, setpopUpCondition] = useState(false);
-  const [imageId, setimageId] = useState(0);
+  const [searchResult, setsearchResult] = useState("mountains");
 
   const getDataFromRedux = useSelector((state) => state.getData);
 
@@ -26,24 +27,12 @@ const SearchResult = () => {
       : undefined;
 
   useEffect(() => {
-    dispatch(getImagesAsync());
-
-    console.log(" --> " + getImageIdFromUrl );
+    dispatch(getImagesAsync({ queryText: searchResult }));
 
     if (getImageIdFromUrl !== undefined) {
       openPopup();
     }
   }, [navigation]);
-
-  // const fetchData = () => {
-  //   if (
-  //     getDataFromRedux.isLoading !== true &&
-  //     getDataFromRedux.data.hits !== undefined
-  //   ) {
-  //     // console.log(getData.data.data)
-  //     setimagesData(getDataFromRedux.data);
-  //   }
-  // };
 
   const openPopup = () => {
     document.getElementById("popupOverlay").style.display = "flex";
@@ -61,10 +50,44 @@ const SearchResult = () => {
 
           <nav className="d-flex flex-row">
             <div>
-              <p>Page 2</p>
-            </div>
-            <div>
-              <Link to="/searchResult">Search Results</Link>
+              {localStorage.getItem("userLogged") === null ? (
+                <div>
+                  <Link to="/signupLogin">Signup & Login</Link>
+                </div>
+              ) : (
+                <div>
+                  <Link
+                    className="text-white"
+                    title="Downloaded History"
+                    to="/downloadedImages"
+                    style={{ paddingRight: "10px" }}
+                  >
+                    {" "}
+                    <FaHistory color="#fff" size={25} />{" "}
+                  </Link>
+                  <Link
+                    className="text-white"
+                    title="Favorites"
+                    to="/favoriteImages"
+                    style={{ paddingRight: "10px" }}
+                  >
+                    {" "}
+                    <MdFavorite color="#fff" size={25} />{" "}
+                  </Link>
+                  <Link
+                    className="text-danger"
+                    title="Logout"
+                    onClick={() => [
+                      localStorage.removeItem("userLogged"),
+                      window.location.reload(),
+                    ]}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {" "}
+                    <BiLogOut color="#fff" size={25} />{" "}
+                  </Link>
+                </div>
+              )}
             </div>
           </nav>
         </header>
@@ -83,16 +106,26 @@ const SearchResult = () => {
                 type="text"
                 className="search-box"
                 placeholder="Start New Search"
+                onChange={(e) => setsearchResult(e.target.value)}
               />
 
-              <button type="submit" className="submit-button">
+              <button
+                type="submit"
+                className="submit-button"
+                onClick={() =>
+                  dispatch(getImagesAsync({ queryText: searchResult }))
+                }
+              >
                 Go!
               </button>
             </div>
           </div>
 
           <div className="resultTechnology mt-3">
-            <p>Results: Technology</p>
+            <p>
+              Results:{" "}
+              {searchResult.charAt(0).toUpperCase() + searchResult.slice(1)}{" "}
+            </p>
           </div>
         </div>
       </section>
@@ -113,41 +146,85 @@ const SearchResult = () => {
         ) : null}
       </div>
 
-      <section className="secondContainer d-flex flex-row justify-content-between">
-        <div>
-          {" "}
-          <p>mountains</p>{" "}
-        </div>
-        <div>
-          {" "}
-          <p>computer</p>{" "}
-        </div>
-        <div>
-          {" "}
-          <p>programming</p>{" "}
-        </div>
-        <div>
-          {" "}
-          <p>wallpapers</p>{" "}
-        </div>
-        <div>
-          {" "}
-          <p>jobs</p>{" "}
-        </div>
-        <div>
-          {" "}
-          <p>Code</p>{" "}
-        </div>
-        <div>
-          {" "}
-          <p>finanzieren</p>{" "}
-        </div>
-        <div>
-          {" "}
-          <p>Marketing</p>{" "}
-        </div>
-      </section>
-      {/* <button onClick={() => openPopup()}>Open Popup</button> */}
+      <div className=" d-none d-lg-block ">
+        <section className="secondContainer d-flex flex-row justify-content-between ">
+          <div
+            style={{ cursor: "pointer" }}
+            onClick={() => [
+              dispatch(getImagesAsync({ queryText: "mountains" })),
+              setsearchResult("monntains"),
+            ]}
+          >
+            {" "}
+            <p>Mountains</p>{" "}
+          </div>
+          <div
+            style={{ cursor: "pointer" }}
+            onClick={() => [
+              dispatch(getImagesAsync({ queryText: "ocean" })),
+              setsearchResult("ocean"),
+            ]}
+          >
+            {" "}
+            <p>Ocean</p>{" "}
+          </div>
+          <div
+            style={{ cursor: "pointer" }}
+            onClick={() => [
+              dispatch(getImagesAsync({ queryText: "computer" })),
+              setsearchResult("computer"),
+            ]}
+          >
+            {" "}
+            <p>Computer</p>{" "}
+          </div>
+          <div
+            style={{ cursor: "pointer" }}
+            onClick={() => [
+              dispatch(getImagesAsync({ queryText: "programming" })),
+              setsearchResult("programming"),
+            ]}
+          >
+            {" "}
+            <p>Programming</p>{" "}
+          </div>
+          <div
+            style={{ cursor: "pointer" }}
+            onClick={() => [
+              dispatch(getImagesAsync({ queryText: "wallpapers" })),
+              setsearchResult("wallpapers"),
+            ]}
+          >
+            {" "}
+            <p>Wallpapers</p>{" "}
+          </div>
+          <div
+            style={{ cursor: "pointer" }}
+            onClick={() => [
+              dispatch(getImagesAsync({ queryText: "jobs" })),
+              setsearchResult("jobs"),
+            ]}
+          >
+            {" "}
+            <p>Jobs</p>{" "}
+          </div>
+
+          <div className=" w-25 float-start ">
+            <select className="form-select" aria-label="Default select example">
+              <option selected>Use Filters</option>
+              <option value="1">
+                Sort By <b>Name</b>{" "}
+              </option>
+              <option value="2">
+                Sort By <b>Id</b>{" "}
+              </option>
+              <option value="3">
+                Sort By <b>Ratings</b>{" "}
+              </option>
+            </select>
+          </div>
+        </section>
+      </div>
 
       <section className="thirdContainer">
         <div className="row mb-3">

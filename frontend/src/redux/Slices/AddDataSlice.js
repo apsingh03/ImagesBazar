@@ -50,11 +50,11 @@ export const updateRestaurantAsync = createAsyncThunk(
 export const getImagesAsync = createAsyncThunk(
   "imagesBazar/getImages",
 
-  async () => {
-    // console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
-    const searchQuery = "mountains+cars";
+  async ({ queryText }) => {
+    // console.log("--> "  + queryText)
+
     const response = await axios.get(
-      `https://pixabay.com/api/?key=41909199-7a39a7a3a69f000bfab5c8248&q=${searchQuery}&image_type=photo&pretty=true&per_page=50`
+      `https://pixabay.com/api/?key=41909199-7a39a7a3a69f000bfab5c8248&q=${queryText}&image_type=photo&pretty=true&per_page=50`
     );
     // console.log(response.data)
     return response.data;

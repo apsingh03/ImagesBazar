@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Header from "../components/Header";
 import { saveAs } from "file-saver";
+import { FaShareAlt } from "react-icons/fa";
 
 import {
   deleteHistoryAsync,
@@ -9,13 +10,28 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RotatingLines } from "react-loader-spinner";
 import { Link } from "react-router-dom";
+import ShareButton from "../components/ShareButton";
 
 const History = () => {
   const dispatch = useDispatch();
 
   const historyList = useSelector((state) => state.history);
-
+  const shareLinkRef = useRef(null);
+  const [shareLink, setshareLink] = useState("");
   // console.log( "historyList - " , historyList );
+
+  const copyToClipboard = () => {
+    if (shareLinkRef.current) {
+      navigator.clipboard
+        .writeText(shareLinkRef.current.value)
+        .then(() => {
+          console.log("Link copied to clipboard");
+        })
+        .catch((err) => {
+          console.error("Unable to copy link to clipboard", err);
+        });
+    }
+  };
 
   useEffect(() => {
     dispatch(getImagesHistoryAsync());
@@ -63,6 +79,7 @@ const History = () => {
                         <td>
                           <img
                             src={data.imageUrl}
+                            title="Image"
                             alt="mountains"
                             width={100}
                             height={100}
@@ -70,37 +87,67 @@ const History = () => {
                           />{" "}
                         </td>
                         <td>
-                          <div className="d-flex flex-row justify-content-around ">
-                            <Link
-                              to={`/searchResult/${data.imageId}`}
-                              className="btn btn-primary btn-md"
-                              title="View it"
-                            >
-                              View
-                            </Link>
-                            <button
-                              className="btn btn-success btn-md"
-                              title="View it"
-                              onClick={() =>
-                                saveAs(`${data.largeImageURL}`, "image.jpg")
-                              }
-                            >
-                              Download Again
-                            </button>
-                            <button
-                              className="btn btn-danger btn-md"
-                              title="Delete it"
-                              onClick={() =>
-                                dispatch(
-                                  deleteHistoryAsync({
-                                    userId: data.userId_id,
-                                    imageId: data.imageId,
-                                  })
-                                )
-                              }
-                            >
-                              Delete
-                            </button>
+                          <div
+                            className="d-flex flex-row  "
+                            id="downloadImagesActions"
+                          >
+                            <div>
+                              <Link
+                                to={`/searchResult/${data.imageId}`}
+                                className="btn btn-primary btn-md"
+                                title="View it"
+                              >
+                                View
+                              </Link>
+                            </div>
+
+                            <div>
+                              <button
+                                className="btn btn-success btn-md"
+                                title="Download Again"
+                                onClick={() =>
+                                  saveAs(`${data.largeImageURL}`, "image.jpg")
+                                }
+                              >
+                                Download Again
+                              </button>
+                            </div>
+
+                            <div title="Share It" style={{ cursor: "pointer" }}>
+                              <ShareButton
+                                key={index}
+                                links={`http://localhost:3000/searchResult/${data.imageId}`}
+                                index={index}
+                              />
+                            </div>
+
+                            {/* <div title="Share It" onClick={ () => copyToClipboard() }  style={{cursor: "pointer"}} >
+                              <input type="hidden"   value={`http://localhost:3000/searchResult/${data.imageId}`}  ref={shareLinkRef} onChange={ (e) => setshareLink(e.target.value) } readOnly  />
+                            <FaShareAlt color="black" size={25} />
+                            </div> */}
+
+                            <div>
+                              <button
+                                className="btn btn-danger btn-md"
+                                title="Delete it"
+                                onClick={() => {
+                                  if (
+                                    window.confirm(
+                                      "Are you sure want to Delete this Product? "
+                                    )
+                                  ) {
+                                    dispatch(
+                                      deleteHistoryAsync({
+                                        userId: data.userId_id,
+                                        imageId: data.imageId,
+                                      })
+                                    );
+                                  }
+                                }}
+                              >
+                                Delete
+                              </button>
+                            </div>
                           </div>
                         </td>
                       </tr>

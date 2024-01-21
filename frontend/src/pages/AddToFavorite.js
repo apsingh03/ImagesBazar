@@ -64,33 +64,47 @@ const AddToFavorite = () => {
                             alt="mountains"
                             width={100}
                             height={100}
+                            title="Image"
                             style={{ objectFit: "contain" }}
                           />{" "}
                         </td>
                         <td>
-                          <div className="d-flex flex-row justify-content-around ">
-                            <Link
-                              to={`/searchResult/${data.imageId}`}
-                              className="btn btn-primary btn-md"
-                              title="View it"
-                            >
-                              View
-                            </Link>
+                          <div
+                            className="d-flex flex-row  "
+                            id="downloadImagesActions"
+                          >
+                            <div>
+                              <Link
+                                to={`/searchResult/${data.imageId}`}
+                                className="btn btn-primary btn-md"
+                                title="View it"
+                              >
+                                View
+                              </Link>
+                            </div>
 
-                            <button
-                              className="btn btn-danger btn-md"
-                              title="Delete it"
-                              onClick={() =>
-                                dispatch(
-                                  deleteImageAsync({
-                                    userId: data.userId_id,
-                                    imageId: data.imageId,
-                                  })
-                                )
-                              }
-                            >
-                              Delete
-                            </button>
+                            <div>
+                              <button
+                                className="btn btn-danger btn-md"
+                                title="Delete it"
+                                onClick={() => {
+                                  if (
+                                    window.confirm(
+                                      "Are you sure want to Delete this Product? "
+                                    )
+                                  ) {
+                                    dispatch(
+                                      deleteImageAsync({
+                                        userId: data.userId_id,
+                                        imageId: data.imageId,
+                                      })
+                                    );
+                                  }
+                                }}
+                              >
+                                Delete
+                              </button>
+                            </div>
                           </div>
                         </td>
                       </tr>

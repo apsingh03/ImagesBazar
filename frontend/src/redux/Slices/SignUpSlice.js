@@ -2,27 +2,27 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { backendUrl } from "./Urls";
 
-
 // First, create the thunk
-export const SignUpAsync = createAsyncThunk("users/signup", async ({email, password}) => {
-  try {
+export const SignUpAsync = createAsyncThunk(
+  "users/signup",
+  async ({ email, password }) => {
+    try {
+      // console.log(" email - " ,email )
+      // console.log(" password - " , password )
 
-    // console.log(" email - " ,email )
-    // console.log(" password - " , password )
-
-    const response = await axios.post( backendUrl.signup , {
+      const response = await axios.post(backendUrl.signup, {
         email: email,
-        password: password
-    } );
+        password: password,
+      });
 
-    // console.log("13 -" , response )
+      // console.log("13 -" , response )
 
-    return response.data;
-
-  } catch (error) {
-    console.log(error);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
   }
-});
+);
 
 const initialState = { data: [], isLoading: false, isError: false };
 
@@ -34,17 +34,16 @@ const signUpSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(SignUpAsync.pending, (state, action) => {
-        state.isLoader = true;
+        state.isLoading = true;
       })
       .addCase(SignUpAsync.fulfilled, (state, action) => {
-        state.isLoader = false;
+        state.isLoading = false;
         state.data = action.payload;
-        alert(action.payload.msg)
-
+        alert(action.payload.msg);
       })
 
       .addCase(SignUpAsync.rejected, (state, action) => {
-        state.isLoader = false;
+        state.isLoading = false;
         state.isError = true;
       });
   },

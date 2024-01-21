@@ -50,7 +50,7 @@ header nav a {
   text-decoration: none;
 }
 
-header nav > div {
+header nav>div {
   padding-right: 10px;
   vertical-align: center;
 }
@@ -64,7 +64,7 @@ header nav > div {
   text-align: center;
   text-shadow: 0px 3.563px 3.563px rgba(0, 0, 0, 0.25);
   /* font-family: "Euclid Circular B"; */
-  font-size: 71.25px;
+  font-size: 7vw;
   font-style: normal;
   font-weight: 700;
   line-height: 87.638px;
@@ -83,7 +83,7 @@ header nav > div {
   border: 1px solid #ccc;
   border-radius: 5px 0 0 5px;
   outline: none;
-  width: 650px;
+  width: 75vw;
   padding: 10px 90px 10px 70px;
   height: 60px;
 
@@ -142,7 +142,7 @@ header nav > div {
   text-align: center;
   text-shadow: 0px 3.551px 3.551px rgba(0, 0, 0, 0.25);
   font-family: "Euclid Circular B";
-  font-size: 42.614px;
+  font-size: 6vw;
   font-style: normal;
   font-weight: 700;
   line-height: 87.359px;
@@ -163,7 +163,7 @@ header nav > div {
   padding: 5px 20px;
 }
 
-.secondContainer > div {
+.secondContainer>div {
   border-radius: 4.228px;
   border: 1.057px solid #d1d1d1;
 }
@@ -180,7 +180,7 @@ header nav > div {
   margin-top: 10px;
 }
 
-.thirdContainer .titles > div {
+.thirdContainer .titles>div {
   width: 100%;
 }
 
@@ -314,7 +314,7 @@ header nav > div {
   margin-top: -15px;
   color: #3b4043;
   /* font-family: "Euclid Circular B"; */
-  font-size: 15.994px;
+  font-size: 0.9375em;
   font-style: normal;
   font-weight: 600;
   line-height: 23.102px;
@@ -376,7 +376,7 @@ header nav > div {
   text-decoration: none;
 }
 
-#mainPage2 header nav > div {
+#mainPage2 header nav>div {
   padding-right: 10px;
   vertical-align: center;
 }
@@ -386,7 +386,7 @@ header nav > div {
   text-align: center;
   text-shadow: 0px 3.563px 3.563px rgba(0, 0, 0, 0.25);
   /* font-family: "Euclid Circular B"; */
-  font-size: 71.25px;
+  font-size: 7vw;
   font-style: normal;
   font-weight: 700;
   line-height: 87.638px;
@@ -402,7 +402,7 @@ header nav > div {
   border: 1px solid #ccc;
   border-radius: 5px 0 0 5px;
   outline: none;
-  width: 650px;
+  width: 75vw;
   padding: 10px 90px 10px 70px;
 
   height: 60px;
@@ -420,6 +420,17 @@ header nav > div {
   font-weight: 600;
   line-height: 19.95px;
   /* 112% */
+}
+
+#downloadImagesActions>div {
+  padding-right: 15px;
+}
+
+
+#popupImage {
+  object-fit: cover;
+  width: 100%;
+  height: 450px;
 }
 
 /* 

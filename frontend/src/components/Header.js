@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { Link } from "react-router-dom";
 import { BiLogOut } from "react-icons/bi";
 import { FaHistory } from "react-icons/fa";
@@ -7,23 +7,23 @@ import { MdFavorite } from "react-icons/md";
 const Header = () => {
   return (
     <>
-    
-    <header className="header">
+      <header className="header">
+        <div>
+          <Link to="/" className="logo">
+            HomePage 1
+          </Link>
+        </div>
+
+        <nav className="d-flex flex-row p-3">
           <div>
-            <Link to="/" className="logo">
-              HomePage 1
-            </Link>
+            <Link to="/homePage2">Page 2</Link>
           </div>
 
-          <nav className="d-flex flex-row p-3">
-            <div>
-              <Link to="/homePage2">Page 2</Link>
-            </div>
+          <div>
+            <Link to="/searchResult">Search Results</Link>
+          </div>
 
-            <div>
-              <Link to="/searchResult">Search Results</Link>
-            </div>
-
+          <div>
             {localStorage.getItem("userLogged") === null ? (
               <div>
                 <Link to="/signupLogin">Signup & Login</Link>
@@ -70,13 +70,11 @@ const Header = () => {
                 </Link>
               </div>
             )}
-          </nav>
-        </header>
-    
-    
-    
+          </div>
+        </nav>
+      </header>
     </>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

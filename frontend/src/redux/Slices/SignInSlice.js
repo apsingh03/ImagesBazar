@@ -2,14 +2,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { backendUrl } from "./Urls";
 
-
 // First, create the thunk
 export const SignInAsync = createAsyncThunk(
   "users/signup",
   async ({ email, password }) => {
     try {
-    //  console.log( "11 - " + backendUrl.login )
-      const response = await axios.post( backendUrl.login  , {
+      //  console.log( "11 - " + backendUrl.login )
+      const response = await axios.post(backendUrl.login, {
         email: email,
         password: password,
       });
@@ -41,43 +40,35 @@ const signInSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(SignInAsync.pending, (state, action) => {
-        state.isLoader = true;
+        state.isLoading = true;
       })
       .addCase(SignInAsync.fulfilled, (state, action) => {
-        state.isLoader = false;
+        state.isLoading = false;
         state.data = action.payload;
-        console.log( "payload - " + action.payload);
+        // console.log( "payload - " + action.payload);
 
         try {
+          if (action.payload.msg === "SignIn Successfull") {
+            // alert(action.payload.msg)
 
-            if (action.payload.msg === "SignIn Successfull") {
+            const { email, name, id } = action.payload.data[0];
 
-              // alert(action.payload.msg)
+            let user = {
+              id: id,
+              email: email,
+              name: name,
+            };
 
-                const {email , name ,id} = action.payload.data[0];
+            const convert = JSON.stringify(user);
+            localStorage.setItem("userLogged", convert);
 
-                let user = {
-                    id: id,
-                    email : email,
-                    name: name,
-                }
-    
-                const convert = JSON.stringify(user);
-                localStorage.setItem("userLogged", convert);
-
-                window.location.replace("/")
-
-            }
-          
-            
-        } catch (error) {
-            
-        }
-
+            window.location.replace("/");
+          }
+        } catch (error) {}
       })
 
       .addCase(SignInAsync.rejected, (state, action) => {
-        state.isLoader = false;
+        state.isLoading = false;
         state.isError = true;
       });
   },

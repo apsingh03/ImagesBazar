@@ -9,13 +9,16 @@ export const addImageFavoriteAsync = createAsyncThunk(
   "imagesBazar/addToFavorite",
 
   async ({ imageId, imageUrl, userId }) => {
+    console.log(imageId);
+    console.log(imageUrl);
+    console.log(userId);
 
     const response = await axios.post(backendUrl.addFavorite, {
       imageId: imageId,
       imageUrl: imageUrl,
       userId: userId,
     });
-    // console.log(response.data)
+    console.log("data - ", response.data);
     return response.data;
   }
 );

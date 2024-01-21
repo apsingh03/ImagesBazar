@@ -2,12 +2,18 @@ import React, { useEffect } from "react";
 import { getImageByIdAsync } from "../redux/Slices/DataByIdSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { MdFavorite } from "react-icons/md";
 
+import { AiFillHeart } from "react-icons/ai";
 import { RotatingLines } from "react-loader-spinner";
 import { saveAs } from "file-saver";
-import { addImageFavoriteAsync } from "../redux/Slices/FavoritesSlice";
+import {
+  addImageFavoriteAsync,
+  deleteImageAsync,
+  getImagesFavoritesAsync,
+} from "../redux/Slices/FavoritesSlice";
 import { addImageHistoryAsync } from "../redux/Slices/HistorySlice";
+import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
+import { addRestaurantAsync } from "../redux/Slices/AddDataSlice";
 
 const Popup = () => {
   const getImageIdFromUrl = document.location.href.split("/")[4];
@@ -19,9 +25,12 @@ const Popup = () => {
   const favorites = useSelector((state) => state.favorites);
   const history = useSelector((state) => state.history);
 
+  // console.log( "favo - " ,  favorites.data.data );
+
   useEffect(() => {
     if (getImageIdFromUrl !== undefined) {
       dispatch(getImageByIdAsync({ id: getImageIdFromUrl }));
+      dispatch(getImagesFavoritesAsync());
     }
   }, [navigation]);
 
@@ -91,60 +100,116 @@ const Popup = () => {
               return (
                 <section key={data.id}>
                   <div className="row">
-                    <div className="col-8  leftSide">
+                    <div className="col-12 col-md-8  leftSide">
                       <div>
                         <img
                           // src="https://s3-alpha-sig.figma.com/img/7257/0dd8/f59889534d6eb86a2277cba040d53e12?Expires=1706486400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=HogiLLpFqR5f~3hDfCRhpglhoAJNc7B8Qy1grIoSrmVeU2erYltutAhDg~NskE~RJmVagc854h~~w-qIQCtVND8cmmKX9xe84tGPpQbnBKMlPENDxJfZtLXGmpusoc6d-Nv7zeE51vWzokQb30LdFPsGJe54VVBAdsVgYCORxLr-VFt5ThwppjpBe8RDly40mZQ8ORWYTAbPO3eIUyCEDR0mbDWcG42W~WiCAdiKHSWV2nicq~zU4jpkaVJA0LsQMwdve9RkBlHylSzg~wRd2NO353hG4dddMRO2DiD5x6QzO0iGUy5U9S7cDq1PvW8R5hO3HX79cONSrxjbIjALRA__"
                           src={data.webformatURL}
                           alt="mountain"
-                          className="rounded-3 mt-3"
-                          style={{
-                            width: "100%",
-                            height: "450px",
-                            objectFit: "cover",
-                          }}
+                          className="rounded-3 mt-3  img-fluid"
+                          id="popupImage"
                         />
                       </div>
                     </div>
 
-                    <div className="col-4  rightSide">
+                    <div className="col-12 col-md-4  rightSide">
                       <div className="d-flex flex-row justify-content-between">
                         <h1>Download</h1>
 
-                        {localStorage.getItem("userLogged") === null ? (
-                          <div>
-                            <b>Login</b>
-                          </div>
-                        ) : (
-                          <div>
-                            <div
-                              title="Add to Favorite"
-                              style={{ cursor: "pointer" }}
-                              onClick={() =>
-                                dispatch(
-                                  addImageFavoriteAsync({
-                                    imageId: data.id,
-                                    imageUrl: data.largeImageURL,
-                                    userId: JSON.parse(
-                                      localStorage.getItem("userLogged")
-                                    ).id,
-                                  })
-                                )
+                        {(() => {
+                          if (localStorage.getItem("userLogged") === null) {
+                            return (
+                              <div>
+                                <MdFavoriteBorder
+                                  color="black"
+                                  size={30}
+                                  title="WishList"
+                                  onClick={() => alert("Please Login First")}
+                                />
+                              </div>
+                            );
+                          } else {
+                            // console.log("sdfsdfd------- " , data.id);
+
+                            //  return (
+
+                            //   <h1>hjgjgj</h1>
+
+                            //  )
+
+                            const length =
+                              favorites.data.data && favorites.data.data.length;
+
+                            for (let i = 0; i < length; i++) {
+                              // console.log( "len - " , favorites.data.data[i].imageId , " " , data.id );
+
+                              if (favorites.data.data[i].imageId == data.id) {
+                                // console.log("match");
+
+                                return (
+                                  <div title="Its Favorited">
+                                    <MdFavorite
+                                      color="black"
+                                      size={30}
+                                      title="WishList"
+                                      onClick={(e) => {
+                                        if (
+                                          window.confirm(
+                                            "Are you sure want to remove from Favorite? "
+                                          )
+                                        ) {
+                                          dispatch(
+                                            deleteImageAsync({
+                                              userId: JSON.parse(
+                                                localStorage.getItem(
+                                                  "userLogged"
+                                                )
+                                              ).id,
+                                              imageId:
+                                                favorites.data.data[i].imageId,
+                                            })
+                                          );
+                                        }
+                                      }}
+                                    />
+                                  </div>
+                                );
+                              } else {
+                                // console.log("match");
+
+                                return (
+                                  <div title="favorite">
+                                    <MdFavoriteBorder
+                                      color="black"
+                                      size={30}
+                                      title="WishList"
+                                      onClick={() =>
+                                        dispatch(
+                                          addImageFavoriteAsync({
+                                            imageId: data.id,
+                                            imageUrl: data.largeImageURL,
+                                            userId: JSON.parse(
+                                              localStorage.getItem("userLogged")
+                                            ).id,
+                                          })
+                                        )
+                                      }
+                                    />
+                                  </div>
+                                );
                               }
-                            >
-                              {" "}
-                              <MdFavorite color="black" size={35} />{" "}
-                            </div>
-                          </div>
-                        )}
+                            }
+                          }
+                        })()}
                       </div>
 
                       <div>
-                        <table
-                          className="table table-hover"
-                          style={{ border: "2px solid #DEE8F4" }}
-                        >
-                          {/* <thead>
+                        <div class="table-responsive mb-3">
+                          <table
+                            className="table table-hover"
+                            style={{ border: "2px solid #DEE8F4" }}
+                          >
+                            {/* <thead>
                           <tr>
                             <th scope="col">#</th>
                             <th scope="col">First</th>
@@ -152,70 +217,71 @@ const Popup = () => {
                             <th scope="col">Handle</th>
                           </tr>
                         </thead> */}
-                          <tbody>
-                            <tr>
-                              <td>Small</td>
-                              <td> </td>
-                              <td>
-                                {" "}
-                                <b>
+                            <tbody>
+                              <tr>
+                                <td>Small</td>
+                                <td> </td>
+                                <td>
                                   {" "}
-                                  {data.previewWidth}&#xd7;{data.previewHeight}{" "}
-                                </b>{" "}
-                              </td>
+                                  <b>
+                                    {" "}
+                                    {data.previewWidth}&#xd7;
+                                    {data.previewHeight}{" "}
+                                  </b>{" "}
+                                </td>
 
-                              <td>
-                                {" "}
-                                <input
-                                  type="checkbox"
-                                  className="rounded-checkbox"
-                                  id="checkbox"
-                                />{" "}
-                              </td>
-                            </tr>
-
-                            <tr>
-                              <td>Medium</td>
-                              <td></td>
-                              <td>
-                                {" "}
-                                <b>
+                                <td>
                                   {" "}
-                                  {data.webformatWidth}&#xd7;
-                                  {data.webformatHeight}{" "}
-                                </b>{" "}
-                              </td>
-                              <td>
-                                {" "}
-                                <input
-                                  type="checkbox"
-                                  className="rounded-checkbox"
-                                  id="checkbox"
-                                />{" "}
-                              </td>
-                            </tr>
+                                  <input
+                                    type="checkbox"
+                                    className="rounded-checkbox"
+                                    id="checkbox"
+                                  />{" "}
+                                </td>
+                              </tr>
 
-                            <tr>
-                              <td>Big</td>
-                              <td></td>
-                              <td>
-                                {" "}
-                                <b>
+                              <tr>
+                                <td>Medium</td>
+                                <td></td>
+                                <td>
                                   {" "}
-                                  {data.imageWidth}&#xd7;{data.imageHeight}{" "}
-                                </b>{" "}
-                              </td>
+                                  <b>
+                                    {" "}
+                                    {data.webformatWidth}&#xd7;
+                                    {data.webformatHeight}{" "}
+                                  </b>{" "}
+                                </td>
+                                <td>
+                                  {" "}
+                                  <input
+                                    type="checkbox"
+                                    className="rounded-checkbox"
+                                    id="checkbox"
+                                  />{" "}
+                                </td>
+                              </tr>
 
-                              <td>
-                                {" "}
-                                <input
-                                  type="checkbox"
-                                  className="rounded-checkbox"
-                                  id="checkbox"
-                                />{" "}
-                              </td>
-                            </tr>
-                            {/*     
+                              <tr>
+                                <td>Big</td>
+                                <td></td>
+                                <td>
+                                  {" "}
+                                  <b>
+                                    {" "}
+                                    {data.imageWidth}&#xd7;{data.imageHeight}{" "}
+                                  </b>{" "}
+                                </td>
+
+                                <td>
+                                  {" "}
+                                  <input
+                                    type="checkbox"
+                                    className="rounded-checkbox"
+                                    id="checkbox"
+                                  />{" "}
+                                </td>
+                              </tr>
+                              {/*     
                           <tr>
                             <td>Original</td>
                             <td></td>
@@ -232,8 +298,9 @@ const Popup = () => {
                               />{" "}
                             </td>
                           </tr> */}
-                          </tbody>
-                        </table>
+                            </tbody>
+                          </table>
+                        </div>
 
                         <button
                           style={{
