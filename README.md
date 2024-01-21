@@ -13,6 +13,8 @@
 - To get images data i used Pixabay API
 - from Search Results page user can filter images dynamically
 - from Search Results page user can sort images in Asc , Desc order
+- In search Reasult dynamic pagination implemented
+- Lazy Loading Implemented
 - Dynamic background images for home page changes at every X seconds
 - Loading Animation
 - Web App is Responsive
