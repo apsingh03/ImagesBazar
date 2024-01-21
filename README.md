@@ -1,21 +1,27 @@
-## Its a Full Stack Restaurant CRUD Assignment 
+## ImageBazar Full Stack  Assignment 
 
 ###  Front End
 
 ### Features
-- user can add restaurant data
-- user can read restaurants list
-- user can update restaurant list
-- user can delete individual restaurant
-- user can sort Restaurants by Name & Ratings
-- user can filter by italian , maxican & all recipes
+- user can Signup / Signin
+- user can set images to favorite
+- user can delete favorite images
+- user can download images & it will add in Download history
+- from Download history page user can copy image link & can share it with friends
+- from Download history page user can copy Re download images
+- from Download history page user can delete history
+- To get images data i used Pixabay API
+- from Search Results page user can filter images dynamically
+- from Search Results page user can sort images in Asc , Desc order
+- Dynamic background images for home page changes at every X seconds
+- Loading Animation
+- Web App is Responsive
 - responsive Design
 - Performance optimization implemented
-![Screenshot](https://drive.google.com/file/d/1CLCSZPd18kvyWOKklQBOI6v0ckFeo6-E/view?usp=sharing)
 
-#### Deployed Link -  [Click Here to Check FrontEnd](https://hilarious-rugelach-b10b48.netlify.app/)
+#### Deployed Link -  [Click Here to Check FrontEnd](https://imagesbazar.netlify.app/)
 
-##### HTML , CSS , Bootstrap , Javascript , React JS , React Router, Redux Toolkit , Redux Thunk
+##### HTML , CSS , Bootstrap , Javascript , React JS , React Router, Redux Toolkit , Redux Thunk , Axios
 
 
 ###  Rest APIS Backend
@@ -23,7 +29,7 @@
 ### Features
 - CRUD 
 
-#### Deployed Link -  [Click Here to Check BackEnd under Restaurant section](https://datavalidation.pythonanywhere.com/)
+#### Deployed Link -  [Click Here to Check BackEnd under imageBazar section](https://datavalidation.pythonanywhere.com/)
 
  #### Django Rest Framework , Mysql , Swagger   
 
@@ -34,7 +40,7 @@ mkdir folderName
 - mkdir frontend
 - mkdir backend
 ### Clone frontend in frontend Folder
-
+     npm install
      npm start 
 
 ### Clone backend in backend Folder
